@@ -43,76 +43,60 @@
             height: auto;
             margin-top: 5px;
         }
-        .login-form {
-            text-align: center;
-            margin-top: 100px;
-        }
     </style>
 </head>
 <body>
 
-    <div id="loginSection" class="login-form">
-        <h2>Login to Audi Dealership System</h2>
-        <input type="text" id="tokenInput" placeholder="Enter access token" />
-        <button onclick="authenticate()">Login</button>
-        <p id="errorMessage" style="color: red; display: none;">Invalid access token. Please try again.</p>
-    </div>
+    <h1>Audi Dealership Management System</h1>
 
-    <div id="appSection" style="display: none;">
-        <h1>Audi Dealership Management System</h1>
-
-        <div>
-            <h2>Add a new car</h2>
-            <div class="form-group">
-                <label for="model">Model:</label>
-                <input type="text" id="model" placeholder="Enter model">
-            </div>
-            <div class="form-group">
-                <label for="year">Year:</label>
-                <input type="number" id="year" placeholder="Enter year">
-            </div>
-            <div class="form-group">
-                <label for="price">Price:</label>
-                <input type="number" id="price" placeholder="Enter price">
-            </div>
-            <div class="form-group">
-                <label for="image">Car Image:</label>
-                <input type="file" id="image" accept="image/*">
-            </div>
-            <button onclick="addCar()">Add Car</button>
+    <div>
+        <h2>Add a new car</h2>
+        <div class="form-group">
+            <label for="model">Model:</label>
+            <input type="text" id="model" placeholder="Enter model">
         </div>
-
-        <h2>Cars in Inventory</h2>
-        <table id="carsTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Model</th>
-                    <th>Year</th>
-                    <th>Price</th>
-                    <th>Image</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Cars will be displayed here -->
-            </tbody>
-        </table>
+        <div class="form-group">
+            <label for="year">Year:</label>
+            <input type="number" id="year" placeholder="Enter year">
+        </div>
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="number" id="price" placeholder="Enter price">
+        </div>
+        <div class="form-group">
+            <label for="image">Car Image:</label>
+            <input type="file" id="image" accept="image/*">
+        </div>
+        <button onclick="addCar()">Add Car</button>
     </div>
+
+    <h2>Cars in Inventory</h2>
+    <table id="carsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Cars will be displayed here -->
+        </tbody>
+    </table>
 
     <script>
-        const ACCESS_TOKEN = "audi123"; // Пример уникального токена
+        const ACCESS_TOKEN = "audi123"; // Токен для доступа
 
-        // Проверка параметра token в URL и аутентификация
-        function authenticate() {
-            const token = document.getElementById('tokenInput').value;
-            if (token === ACCESS_TOKEN) {
-                // Если токен правильный, показываем основной интерфейс
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('appSection').style.display = 'block';
-                loadCars(); // Загружаем автомобили
-            } else {
-                document.getElementById('errorMessage').style.display = 'block';
+        // Проверяем токен в URL
+        function checkToken() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            if (token !== ACCESS_TOKEN) {
+                // Если токен неверный, редиректим обратно на страницу входа
+                window.location.href = "login.html";
             }
         }
 
@@ -183,18 +167,14 @@
             loadCars();
         }
 
-        // Проверка параметра token при загрузке страницы
+        // Загружаем список автомобилей при загрузке страницы
         window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const token = urlParams.get('token');
-            if (token === ACCESS_TOKEN) {
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('appSection').style.display = 'block';
-                loadCars(); // Загружаем автомобили, если токен правильный
-            }
+            checkToken();
+            loadCars();
         }
     </script>
 
 </body>
 </html>
+
 
